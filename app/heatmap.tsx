@@ -37,7 +37,7 @@ const Heatmap: React.FC<{ userId: string; rows: number; cols: number }> = ({
     const { data, error } = await supabase
       .from("heatmap_data") // Tabelle 'heatmap_data'
       .upsert([{ user_id: userId, row, col, click }], {
-        onConflict: ["user_id", "row", "col"],
+        onConflict: "user_id,row,col",
       });
 
     if (error) console.error(error);
