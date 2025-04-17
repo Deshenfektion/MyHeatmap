@@ -1,9 +1,5 @@
-import React, { useState } from "react";
-
-type HeatmapProps = {
-  rows: number;
-  cols: number;
-};
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabaseClient";
 
 const MAX_CLICKS = 3;
 
@@ -20,20 +16,69 @@ const getColor = (clicks: number) => {
   }
 };
 
-const Heatmap: React.FC<HeatmapProps> = ({ rows, cols }) => {
+const Heatmap: React.FC<{ userId: string; rows: number; cols: number }> = ({
+  userId,
+  rows,
+  cols,
+}) => {
   const [clickCounts, setClickCounts] = useState(
     Array(rows)
       .fill(null)
       .map(() => Array(cols).fill(0))
   );
 
+  // Klickdaten speichern
+  const saveClickData = async (
+    userId: string,
+    row: number,
+    col: number,
+    click: number
+  ) => {
+    const { data, error } = await supabase
+      .from("heatmap_data") // Tabelle 'heatmap_data'
+      .upsert([{ user_id: userId, row, col, click }], {
+        onConflict: ["user_id", "row", "col"],
+      });
+
+    if (error) console.error(error);
+    return data;
+  };
+
+  // Klickverhalten
   const handleClick = (row: number, col: number) => {
     setClickCounts((prev) => {
       const newGrid = prev.map((r) => [...r]);
       newGrid[row][col] = (newGrid[row][col] + 1) % (MAX_CLICKS + 1);
+
+      // Speichere in Supabase
+      saveClickData(userId, row, col, newGrid[row][col]);
+
       return newGrid;
     });
   };
+
+  // Lade vorherige Klickdaten
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase
+        .from("heatmap_data")
+        .select("*")
+        .eq("user_id", userId);
+
+      if (error) {
+        console.error(error);
+      } else {
+        const newGrid = Array(rows)
+          .fill(null)
+          .map(() => Array(cols).fill(0));
+        data?.forEach((entry: any) => {
+          newGrid[entry.row][entry.col] = entry.click; // Verwende 'click' statt 'click_count'
+        });
+        setClickCounts(newGrid);
+      }
+    };
+    fetchData();
+  }, [userId, rows, cols]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
