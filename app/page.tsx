@@ -37,10 +37,7 @@ export default function Home() {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-2xl mb-4">Bitte einloggen</h1>
-        <button
-          onClick={handleLogin}
-          className="px-4 py-2 bg-green-600 text-white rounded"
-        >
+        <button onClick={handleLogin} className="px-4 py-2 bg-green-600">
           Login mit GitHub
         </button>
       </div>

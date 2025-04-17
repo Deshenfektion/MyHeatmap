@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
+import "./globals.css";
 
 const MAX_CLICKS = 3;
 
 const getColor = (clicks: number) => {
   switch (clicks) {
     case 1:
-      return "bg-green-100";
+      return "bg-green-100 dark:bg-green-900";
     case 2:
-      return "bg-green-400";
+      return "bg-green-400 dark:bg-green-700";
     case 3:
-      return "bg-green-700";
+      return "bg-green-700 dark:bg-green-500";
     default:
-      return "bg-white";
+      return "bg-white dark:bg-gray-800";
   }
 };
 
@@ -81,8 +82,10 @@ const Heatmap: React.FC<{ userId: string; rows: number; cols: number }> = ({
   }, [userId, rows, cols]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-4">
-      <h1 className="text-2xl font-semibold mb-4">MyHeatmap</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
+      <h1 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
+        MyHeatmap
+      </h1>
       <div
         className="grid gap-1"
         style={{ gridTemplateColumns: `repeat(${cols}, 2rem)` }}
@@ -91,7 +94,7 @@ const Heatmap: React.FC<{ userId: string; rows: number; cols: number }> = ({
           row.map((clicks, colIndex) => (
             <div
               key={`${rowIndex}-${colIndex}`}
-              className={`w-8 h-8 rounded-md border border-gray-300 cursor-pointer transition-all duration-200 ${getColor(
+              className={`w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 cursor-pointer transition-all duration-200 ${getColor(
                 clicks
               )}`}
               onClick={() => handleClick(rowIndex, colIndex)}
