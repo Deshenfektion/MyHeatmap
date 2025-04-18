@@ -17,6 +17,23 @@ const getColor = (clicks: number) => {
   }
 };
 
+type SquareProps = {
+  clicks: number;
+  onClick: () => void;
+};
+
+const Square: React.FC<SquareProps> = ({ clicks, onClick }) => {
+  return (
+    <div
+      className={`w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 cursor-pointer transition-all duration-200 ${getColor(
+        clicks
+      )}`}
+      onClick={onClick}
+      title={`Klicks: ${clicks}`}
+    />
+  );
+};
+
 const Heatmap: React.FC<{ userId: string; rows: number; cols: number }> = ({
   userId,
   rows,
@@ -28,7 +45,6 @@ const Heatmap: React.FC<{ userId: string; rows: number; cols: number }> = ({
       .map(() => Array(cols).fill(0))
   );
 
-  // Klickdaten speichern
   const saveClickData = async (
     userId: string,
     row: number,
@@ -36,7 +52,7 @@ const Heatmap: React.FC<{ userId: string; rows: number; cols: number }> = ({
     click: number
   ) => {
     const { data, error } = await supabase
-      .from("heatmap_data") // Tabelle 'heatmap_data'
+      .from("heatmap_data")
       .upsert([{ user_id: userId, row, col, click }], {
         onConflict: "user_id,row,col",
       });
@@ -45,20 +61,17 @@ const Heatmap: React.FC<{ userId: string; rows: number; cols: number }> = ({
     return data;
   };
 
-  // Klickverhalten
   const handleClick = (row: number, col: number) => {
     setClickCounts((prev) => {
       const newGrid = prev.map((r) => [...r]);
       newGrid[row][col] = (newGrid[row][col] + 1) % (MAX_CLICKS + 1);
 
-      // Speichere in Supabase
       saveClickData(userId, row, col, newGrid[row][col]);
 
       return newGrid;
     });
   };
 
-  // Lade vorherige Klickdaten
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase
@@ -73,7 +86,7 @@ const Heatmap: React.FC<{ userId: string; rows: number; cols: number }> = ({
           .fill(null)
           .map(() => Array(cols).fill(0));
         data?.forEach((entry: any) => {
-          newGrid[entry.row][entry.col] = entry.click; // Verwende 'click' statt 'click_count'
+          newGrid[entry.row][entry.col] = entry.click;
         });
         setClickCounts(newGrid);
       }
@@ -82,23 +95,18 @@ const Heatmap: React.FC<{ userId: string; rows: number; cols: number }> = ({
   }, [userId, rows, cols]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
-      <h1 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
-        MyHeatmap
-      </h1>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+      <h1 className="text-2xl font-semibold mb-4">MyHeatmap</h1>
       <div
         className="grid gap-1"
         style={{ gridTemplateColumns: `repeat(${cols}, 2rem)` }}
       >
         {clickCounts.map((row, rowIndex) =>
           row.map((clicks, colIndex) => (
-            <div
+            <Square
               key={`${rowIndex}-${colIndex}`}
-              className={`w-8 h-8 rounded-md border border-gray-300 dark:border-gray-600 cursor-pointer transition-all duration-200 ${getColor(
-                clicks
-              )}`}
+              clicks={clicks}
               onClick={() => handleClick(rowIndex, colIndex)}
-              title={`Klicks: ${clicks}`}
             />
           ))
         )}
