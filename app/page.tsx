@@ -9,48 +9,62 @@ import LoadingSpinner from "./ui/loadingspinner";
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true); // Zustand für das Laden
+  const [loading, setLoading] = useState(true);
+  const [rowLabels, setRowLabels] = useState<string[] | null>(null);
 
   useEffect(() => {
-    // Authentifizierungsstatus überprüfen
-    const fetchUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user);
-      setLoading(false); // Sobald der Status überprüft wurde, auf false setzen
+    const fetchUserAndLabels = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+
+      if (user) {
+        const { data, error } = await supabase
+          .from("row_labels")
+          .select("labels")
+          .eq("user_id", user.id)
+          .single();
+
+        if (data?.labels) {
+          setRowLabels(data.labels);
+        } else {
+          setRowLabels(["Zeile 1", "Zeile 2"]); // Fallback
+        }
+      }
+
+      setLoading(false);
     };
-    fetchUser();
+
+    fetchUserAndLabels();
   }, []);
 
-  // Ladeindikator anzeigen, wenn die Seite noch lädt
-  if (loading) {
-    return <LoadingSpinner />;
-  }
+  if (loading) return <LoadingSpinner />;
 
-  const handleLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: "github", // oder "google"
-    });
-  };
-
-  // Wenn der User noch nicht eingeloggt ist, den Login-Screen anzeigen
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <h1 className="text-2xl mb-4">Bitte einloggen</h1>
-        <button onClick={handleLogin} className="px-4 py-2 bg-green-600">
+        <button
+          onClick={() => supabase.auth.signInWithOAuth({ provider: "github" })}
+          className="px-4 py-2 bg-green-600"
+        >
           Login mit GitHub
         </button>
       </div>
     );
   }
 
-  // Wenn der User eingeloggt ist, die Heatmap anzeigen
   return (
-    <Heatmap
-      userId={user.id}
-      rows={2}
-      cols={20}
-      rowLabels={["Learn1NewThing", "KalorienVerbrennung"]}
-    />
+    <>
+      {rowLabels && (
+        <Heatmap
+          userId={user.id}
+          initialRowLabels={rowLabels}
+          rows={2}
+          cols={20}
+        />
+      )}
+    </>
   );
 }

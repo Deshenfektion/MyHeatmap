@@ -38,13 +38,14 @@ const Heatmap: React.FC<{
   userId: string;
   rows: number;
   cols: number;
-  rowLabels: string[];
-}> = ({ userId, rows, cols, rowLabels }) => {
+  initialRowLabels: string[];
+}> = ({ userId, rows, cols, initialRowLabels }) => {
   const [clickCounts, setClickCounts] = useState(
     Array(rows)
       .fill(null)
       .map(() => Array(cols).fill(0))
   );
+  const [rowLabels, setRowLabels] = useState(initialRowLabels);
 
   const saveClickData = async (
     userId: string,
@@ -52,14 +53,31 @@ const Heatmap: React.FC<{
     col: number,
     click: number
   ) => {
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from("heatmap_data")
       .upsert([{ user_id: userId, row, col, click }], {
         onConflict: "user_id,row,col",
       });
 
     if (error) console.error(error);
-    return data;
+  };
+
+  const saveRowLabels = async (updatedLabels: string[]) => {
+    const { error } = await supabase
+      .from("row_labels")
+      .upsert(
+        { user_id: userId, labels: updatedLabels },
+        { onConflict: "user_id" }
+      );
+
+    if (error) console.error("Fehler beim Speichern der Labels:", error);
+  };
+
+  const handleLabelChange = (index: number, newLabel: string) => {
+    const updated = [...rowLabels];
+    updated[index] = newLabel;
+    setRowLabels(updated);
+    saveRowLabels(updated);
   };
 
   const handleClick = (row: number, col: number) => {
@@ -74,7 +92,7 @@ const Heatmap: React.FC<{
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchClickData = async () => {
       const { data, error } = await supabase
         .from("heatmap_data")
         .select("*")
@@ -82,54 +100,56 @@ const Heatmap: React.FC<{
 
       if (error) {
         console.error(error);
-      } else {
-        const newGrid = Array(rows)
-          .fill(null)
-          .map(() => Array(cols).fill(0));
-        data?.forEach((entry: any) => {
-          newGrid[entry.row][entry.col] = entry.click;
-        });
-        setClickCounts(newGrid);
+        return;
       }
+
+      const newGrid = Array(rows)
+        .fill(null)
+        .map(() => Array(cols).fill(0));
+
+      data?.forEach((entry: any) => {
+        newGrid[entry.row][entry.col] = entry.click;
+      });
+
+      setClickCounts(newGrid);
     };
-    fetchData();
+
+    fetchClickData();
   }, [userId, rows, cols]);
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <h1 className="text-2xl font-semibold mb-4">MyHeatmap</h1>
-        <div className="flex">
-          {/* Row Labels */}
-          <div className="flex flex-col items-end pr-4">
-            {rowLabels.map((label, index) => (
-              <div
-                key={`label-${index}`}
-                className="h-8 flex items-center text-sm"
-              >
-                {label}
-              </div>
-            ))}
-          </div>
+    <div className="flex flex-col items-center justify-center min-h-screen p-4">
+      <h1 className="text-2xl font-semibold mb-4">MyHeatmap</h1>
+      <div className="flex">
+        {/* Row Labels */}
+        <div className="flex flex-col items-end pr-4 gap-1">
+          {rowLabels.map((label, index) => (
+            <input
+              key={`label-${index}`}
+              value={label}
+              onChange={(e) => handleLabelChange(index, e.target.value)}
+              className="h-8 text-sm text-right pr-2 border rounded px-1 w-24"
+            />
+          ))}
+        </div>
 
-          {/* Heatmap Grid */}
-          <div
-            className="grid gap-1"
-            style={{ gridTemplateColumns: `repeat(${cols}, 2rem)` }}
-          >
-            {clickCounts.map((row, rowIndex) =>
-              row.map((clicks, colIndex) => (
-                <Square
-                  key={`cell-${rowIndex}-${colIndex}`}
-                  clicks={clicks}
-                  onClick={() => handleClick(rowIndex, colIndex)}
-                />
-              ))
-            )}
-          </div>
+        {/* Heatmap Grid */}
+        <div
+          className="grid gap-1"
+          style={{ gridTemplateColumns: `repeat(${cols}, 2rem)` }}
+        >
+          {clickCounts.map((row, rowIndex) =>
+            row.map((clicks, colIndex) => (
+              <Square
+                key={`cell-${rowIndex}-${colIndex}`}
+                clicks={clicks}
+                onClick={() => handleClick(rowIndex, colIndex)}
+              />
+            ))
+          )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
