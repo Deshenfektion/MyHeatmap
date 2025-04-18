@@ -45,5 +45,12 @@ export default function Home() {
   }
 
   // Wenn der User eingeloggt ist, die Heatmap anzeigen
-  return <Heatmap userId={user.id} rows={5} cols={5} />;
+  return (
+    <Heatmap
+      userId={user.id}
+      rows={2}
+      cols={20}
+      rowLabels={["Learn1NewThing", "KalorienVerbrennung"]}
+    />
+  );
 }

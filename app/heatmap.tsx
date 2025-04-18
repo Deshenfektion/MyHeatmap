@@ -34,11 +34,12 @@ const Square: React.FC<SquareProps> = ({ clicks, onClick }) => {
   );
 };
 
-const Heatmap: React.FC<{ userId: string; rows: number; cols: number }> = ({
-  userId,
-  rows,
-  cols,
-}) => {
+const Heatmap: React.FC<{
+  userId: string;
+  rows: number;
+  cols: number;
+  rowLabels: string[];
+}> = ({ userId, rows, cols, rowLabels }) => {
   const [clickCounts, setClickCounts] = useState(
     Array(rows)
       .fill(null)
@@ -95,23 +96,40 @@ const Heatmap: React.FC<{ userId: string; rows: number; cols: number }> = ({
   }, [userId, rows, cols]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-2xl font-semibold mb-4">MyHeatmap</h1>
-      <div
-        className="grid gap-1"
-        style={{ gridTemplateColumns: `repeat(${cols}, 2rem)` }}
-      >
-        {clickCounts.map((row, rowIndex) =>
-          row.map((clicks, colIndex) => (
-            <Square
-              key={`${rowIndex}-${colIndex}`}
-              clicks={clicks}
-              onClick={() => handleClick(rowIndex, colIndex)}
-            />
-          ))
-        )}
+    <>
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
+        <h1 className="text-2xl font-semibold mb-4">MyHeatmap</h1>
+        <div className="flex">
+          {/* Row Labels */}
+          <div className="flex flex-col items-end pr-4">
+            {rowLabels.map((label, index) => (
+              <div
+                key={`label-${index}`}
+                className="h-8 flex items-center text-sm"
+              >
+                {label}
+              </div>
+            ))}
+          </div>
+
+          {/* Heatmap Grid */}
+          <div
+            className="grid gap-1"
+            style={{ gridTemplateColumns: `repeat(${cols}, 2rem)` }}
+          >
+            {clickCounts.map((row, rowIndex) =>
+              row.map((clicks, colIndex) => (
+                <Square
+                  key={`cell-${rowIndex}-${colIndex}`}
+                  clicks={clicks}
+                  onClick={() => handleClick(rowIndex, colIndex)}
+                />
+              ))
+            )}
+          </div>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
