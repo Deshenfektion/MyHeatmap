@@ -1,16 +1,18 @@
-// page.tsx
+// app/page.tsx
 
 "use client";
 
 import { supabase } from "@/lib/supabaseClient";
 import { useEffect, useState } from "react";
-import Heatmap from "./heatmap";
+import Heatmap from "./ui/heatmap";
 import LoadingSpinner from "./ui/loadingspinner";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [rowLabels, setRowLabels] = useState<string[] | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchUserAndLabels = async () => {
@@ -19,41 +21,30 @@ export default function Home() {
       } = await supabase.auth.getUser();
       setUser(user);
 
-      if (user) {
-        const { data, error } = await supabase
-          .from("row_labels")
-          .select("labels")
-          .eq("user_id", user.id)
-          .single();
+      if (!user) {
+        router.push("/login");
+        return;
+      }
 
-        if (data?.labels) {
-          setRowLabels(data.labels);
-        } else {
-          setRowLabels(["Zeile 1", "Zeile 2"]); // Fallback
-        }
+      const { data, error } = await supabase
+        .from("row_labels")
+        .select("labels")
+        .eq("user_id", user.id)
+        .single();
+
+      if (data?.labels) {
+        setRowLabels(data.labels);
+      } else {
+        setRowLabels(["Zeile 1", "Zeile 2"]); // Fallback
       }
 
       setLoading(false);
     };
 
     fetchUserAndLabels();
-  }, []);
+  }, [router]);
 
   if (loading) return <LoadingSpinner />;
-
-  if (!user) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-2xl mb-4">Bitte einloggen</h1>
-        <button
-          onClick={() => supabase.auth.signInWithOAuth({ provider: "github" })}
-          className="px-4 py-2 bg-green-600"
-        >
-          Login mit GitHub
-        </button>
-      </div>
-    );
-  }
 
   return (
     <>

@@ -18,7 +18,8 @@
     "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-heatmap-grid": "^0.9.1"
+    "react-heatmap-grid": "^0.9.1",
+    "supabase": "^2.20.12"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
