@@ -1,11 +1,10 @@
-// components/Heatmap.tsx
 import { useEffect, useState } from "react";
-import Square from "./Square";
 import {
   fetchHeatmapData,
   incrementSquareClick,
   updateRowLabel,
 } from "@/lib/heatmapService";
+import Square from "./square";
 
 type HeatmapProps = {
   userId: string;
