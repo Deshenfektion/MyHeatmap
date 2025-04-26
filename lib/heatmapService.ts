@@ -34,9 +34,7 @@ async function fetchHeatmapData(
     const { data: heatmap, error: heatmapError } = await supabase
       .from("heatmap")
       .select("*")
-      .eq("user_id", userId)
-      .single();
-
+      .eq("user_id", userId);
     if (heatmapError || !heatmap) {
       return { error: heatmapError?.message || "No heatmap found" };
     }
@@ -88,9 +86,7 @@ async function createNewHeatmap(
     const { data: heatmap, error } = await supabase
       .from("heatmap")
       .insert([{ user_id: userId }])
-      .select()
-      .single();
-
+      .select();
     if (error || !heatmap) {
       return { error: error?.message || "Failed to create heatmap" };
     }
@@ -104,9 +100,7 @@ async function createNewHeatmap(
           label: "Activity",
         },
       ])
-      .select()
-      .single();
-
+      .select();
     if (!row) {
       await supabase.from("heatmap").delete().eq("id", heatmap.id);
       return { error: "Failed to initialize heatmap" };
@@ -171,9 +165,7 @@ async function createRow(
     const { data: row, error } = await supabase
       .from("row")
       .insert([{ heatmap_id: heatmapId, label }])
-      .select()
-      .single();
-
+      .select();
     return error || !row
       ? { error: error?.message || "Failed to create row" }
       : { data: row };
@@ -188,9 +180,7 @@ async function createSquare(rowId: number): Promise<ServiceResponse<Square>> {
     const { data: square, error } = await supabase
       .from("square")
       .insert([{ row_id: rowId, click_count: 0 }])
-      .select()
-      .single();
-
+      .select();
     return error || !square
       ? { error: error?.message || "Failed to create square" }
       : { data: square };
