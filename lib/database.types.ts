@@ -1,9 +1,3 @@
-// For reference
-// https://supabase.com/docs/guides/api/rest/generating-types
-
-// Updating types automatically with GitHub Actions
-// https://supabase.com/docs/guides/api/rest/generating-types#update-types-automatically-with-github-actions
-
 export type Json =
   | string
   | number
@@ -18,23 +12,34 @@ export type Database = {
       heatmap_rows: {
         Row: {
           created_at: string
+          heatmap_id: string
           id: string
           label: string
           order: number | null
         }
         Insert: {
           created_at?: string
+          heatmap_id: string
           id?: string
           label: string
           order?: number | null
         }
         Update: {
           created_at?: string
+          heatmap_id?: string
           id?: string
           label?: string
           order?: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "heatmap_rows_heatmap_id_fkey"
+            columns: ["heatmap_id"]
+            isOneToOne: false
+            referencedRelation: "heatmaps"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       heatmap_squares: {
         Row: {
@@ -67,6 +72,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      heatmaps: {
+        Row: {
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
       }
     }
     Views: {
