@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useTransition } from "react";
 import { Database } from "@/types/database.types";
-import { updateSquareLevel } from "@/app/services/squareService";
+import { updateSquareLevelAndRevalidate } from "../services/rowService";
 
 type HeatmapSquare = Database["public"]["Tables"]["heatmap_squares"]["Row"];
 
@@ -9,6 +9,7 @@ interface SquareProps {
 }
 
 export default function Square({ square }: SquareProps) {
+  const [isPending, startTransition] = useTransition(); // Für Ladezustand
   // Hintergrundfarbe basierend auf dem Level
   const getBackgroundColor = (level: number): string => {
     switch (level) {
@@ -26,15 +27,24 @@ export default function Square({ square }: SquareProps) {
   };
 
   // Klick-Handler zum Aktualisieren des Levels
-  const handleSquareClick = async () => {
-    const newLevel = (square.level + 1) % 4; // Level zyklisch erhöhen (0 -> 1 -> 2 -> 3 -> 0)
-    try {
-      await updateSquareLevel(square.id, newLevel);
-      console.log(`Square ${square.id} updated to level ${newLevel}`);
-      // Optional: Lokale UI-Aktualisierung, falls nötig
-    } catch (error) {
-      console.error("Failed to update square level:", error);
-    }
+  const handleSquareClick = () => {
+    // Wenn bereits eine Aktualisierung läuft, nichts tun
+    if (isPending) return;
+
+    startTransition(async () => {
+      const newLevel = (square.level + 1) % 4;
+      try {
+        // Rufe die Action auf, die revalidatePath enthält
+        await updateSquareLevelAndRevalidate(square.id, newLevel);
+        console.log(
+          `Square ${square.id} update requested to level ${newLevel}`
+        );
+        // Kein router.refresh() oder setState nötig dank revalidatePath
+      } catch (error) {
+        console.error("Failed to update square level:", error);
+        // TODO: Benutzerfeedback bei Fehler
+      }
+    });
   };
 
   return (
