@@ -36,7 +36,7 @@ export default function AddRowForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center space-x-2 mb-4 p-4 border rounded bg-white shadow-sm"
+      className="flex items-center space-x-2 mb-4 p-4 rounded"
     >
       <input
         type="text"

@@ -57,13 +57,13 @@ export default async function Page() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl text-center mb-8">My Heatmap</h1>
 
-      {/* Formular zum Hinzufügen einer Zeile */}
-      <AddRowForm />
-
       {/* Das Heatmap Grid */}
       <div className="mt-6">
         <HeatmapGrid rowsWithSquares={rowsWithSquares} />
       </div>
+
+      {/* Formular zum Hinzufügen einer Zeile */}
+      <AddRowForm />
     </div>
   );
 }

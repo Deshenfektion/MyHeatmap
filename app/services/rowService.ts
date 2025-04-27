@@ -5,7 +5,7 @@ import { Database } from '@/types/database.types';
 // ACHTUNG: Dies sollte idealerweise ein Server-Client sein!
 // Importiere die korrekte Funktion zum Erstellen eines Server-Clients.
 // z.B. import { createServerActionClient } from '@/lib/supabase/server';
-import { createClient } from '@/utils/supabase/client'; // <- Passe dies an!
+import { createClient } from '@/utils/supabase/server'; // <- Passe dies an!
 import { revalidatePath } from 'next/cache';
 
 type HeatmapSquare = Database['public']['Tables']['heatmap_squares']['Row'];

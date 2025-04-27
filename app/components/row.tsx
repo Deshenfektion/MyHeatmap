@@ -71,7 +71,7 @@ export default function HeatmapRow({ row, initialSquares }: HeatmapRowProps) {
   // <Square key={square.id} square={square} onUpdate={handleSquareUpdate} />
 
   return (
-    <div className="flex items-center space-x-2 mb-2 p-2 border-b">
+    <div className="flex items-center space-x-2 mb-2 p-2">
       {/* Label der Zeile */}
       <div className="w-24 font-medium pr-2 text-right shrink-0">
         {row.label}

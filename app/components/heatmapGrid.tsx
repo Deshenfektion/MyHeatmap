@@ -17,7 +17,7 @@ export default function HeatmapGrid({ rowsWithSquares }: HeatmapGridProps) {
   }
 
   return (
-    <div className="p-4 border rounded-md shadow-sm bg-gray-50">
+    <div className="p-4 rounded-md shadow-sm">
       {rowsWithSquares.map((row) => (
         <HeatmapRow
           key={row.id}

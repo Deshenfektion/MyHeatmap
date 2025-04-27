@@ -49,7 +49,9 @@ export default function Square({ square }: SquareProps) {
 
   return (
     <div
-      className={`w-10 h-10 border ${getBackgroundColor(square.level)}`}
+      className={`w-10 h-10 border rounded-sm ${getBackgroundColor(
+        square.level
+      )}`}
       title={`Position: ${square.position}, Level: ${square.level}`}
       onClick={handleSquareClick} // Klick-Handler hinzufügen
     >
