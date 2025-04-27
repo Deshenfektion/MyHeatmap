@@ -94,7 +94,7 @@ export default function HeatmapRow({ row, initialSquares }: HeatmapRowProps) {
       <button
         onClick={handleAddSquare}
         disabled={isPending} // Deaktiviere während die Action läuft
-        className="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 shrink-0"
+        className="w-5 h-8 rounded-sm bg-gray-600  hover:bg-gray-500 text-center shrink-0"
         title="Neues Quadrat hinzufügen"
       >
         +
