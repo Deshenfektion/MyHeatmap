@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
 
 export async function updateSquareLevel(squareId: string, newLevel: number) {
   const supabase = await createClient();
