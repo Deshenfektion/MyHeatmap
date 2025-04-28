@@ -52,7 +52,7 @@ export default function AddRowForm() {
         type="button" // Wichtig: type="button", nicht "submit"
         onClick={handleAddClick}
         disabled={isPending}
-        className="w-24 px-3 py-1 bg-gray-600 text-white rounded-full hover:bg-gray-500 disabled:opacity-50 flex items-center justify-center h-8 m-4" // Styling für runden Plus-Button
+        className="w-24 px-3 py-1 rounded-full  disabled:opacity-50 flex items-center justify-center h-8 m-4" // Styling für runden Plus-Button
         title="Neue Zeile hinzufügen" // Tooltip
       >
         {isPending ? (
