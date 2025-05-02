@@ -16,11 +16,11 @@ export default function Square({ square }: SquareProps) {
       case 0:
         return "bg-white"; // Weiß
       case 1:
-        return "bg-green-100"; // Leicht Grün
+        return "bg-green-200"; // Leicht Grün
       case 2:
-        return "bg-green-300"; // Mittelgrün
+        return "bg-green-500"; // Mittelgrün
       case 3:
-        return "bg-green-500"; // Dunkelgrün
+        return "bg-green-700"; // Dunkelgrün
       default:
         return "bg-white"; // Standardfarbe für ungültige Level
     }
@@ -52,7 +52,8 @@ export default function Square({ square }: SquareProps) {
       className={`w-10 h-10 border rounded-sm ${getBackgroundColor(
         square.level
       )}`}
-      title={`Position: ${square.position}, Level: ${square.level}`}
+      // Format created at to more readable format
+      title={`Created at: ${square.created_at}, Position: ${square.position}, Level: ${square.level}`}
       onClick={handleSquareClick} // Klick-Handler hinzufügen
     >
       {/* Optional: Inhalte oder Debug-Informationen */}
