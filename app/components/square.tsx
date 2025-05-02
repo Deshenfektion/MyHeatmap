@@ -11,6 +11,8 @@ interface SquareProps {
 export default function Square({ square }: SquareProps) {
   const [isPending, startTransition] = useTransition(); // Für Ladezustand
   // Hintergrundfarbe basierend auf dem Level
+
+  console.log(square);
   const getBackgroundColor = (level: number): string => {
     switch (level) {
       case 0:
@@ -47,13 +49,24 @@ export default function Square({ square }: SquareProps) {
     });
   };
 
+  const formatDate = (isoDate: string): string => {
+    const date = new Date(isoDate);
+    return date.toLocaleDateString("de-DE", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
   return (
     <div
       className={`w-10 h-10 border rounded-sm ${getBackgroundColor(
         square.level
       )}`}
       // Format created at to more readable format
-      title={`Created at: ${square.created_at}, Position: ${square.position}, Level: ${square.level}`}
+      title={`Created: ${formatDate(square.created_at)}, Position: ${
+        square.position
+      }, Level: ${square.level}`}
       onClick={handleSquareClick} // Klick-Handler hinzufügen
     >
       {/* Optional: Inhalte oder Debug-Informationen */}
