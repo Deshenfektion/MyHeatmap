@@ -26,9 +26,7 @@ Tip: Hover over a square to see when it was created, its position and its curren
 - Structuring scalable frontend state logic (e.g., handling per-square updates).
 - How visual feedback (e.g., color intensity) can improve engagement and clarity.
 
-## Outlook
-
-Upcoming / missing features:
+## Upcoming / missing features:
 
 - Deleting an activity
 - Editing activity names
