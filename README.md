@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# <img  src="public/favicon.png" width="21" height="21"> MyHeatmap
 
-## Getting Started
+<img src="public/app-screenshot.png">
 
-First, run the development server:
+## Motivation
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+I realized that checking off a habit creates the delusion that we always have to perform on the same level when in reality it is not about going all-in all the time, but about how consistent you do something. That is why I wanted to try a heatmap similar to GitHub's contribution grid for tracking my desired habits and goals.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+🔗 [Live App](https://heatmap-app-two.vercel.app/)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How To Use
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Currently, GitHub is the only sign-in option.
 
-## Learn More
+1. Log in with your GitHub account.
+2. Click the grey plus button on the left to create a new activity.
+3. Then click the grey plus button on the right of your activity to add squares.
+4. Click on squares to track the intensity or quality of your effort.
 
-To learn more about Next.js, take a look at the following resources:
+Tip: Hover over a square to see when it was created, its position and its current level.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## What I Learned
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Designing with user flow in mind: Quick add, click, and see results instantly.
+- Handling real-time data updates and visual state sync across components.
+- Structuring scalable frontend state logic (e.g., handling per-square updates).
+- How visual feedback (e.g., color intensity) can improve engagement and clarity.
 
-## Deploy on Vercel
+## Outlook
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Upcoming / missing features:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Deleting an activity
+- Editing activity names
+- More sign-in options (Google, Email, etc.)
+- A clearer way to show when squares were created
+- Exporting stats or visualizations
+- Mobile UI improvements
