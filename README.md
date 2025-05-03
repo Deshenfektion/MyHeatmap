@@ -30,6 +30,7 @@ Tip: Hover over a square to see when it was created, its position and its curren
 
 - Deleting an activity
 - Editing activity names
+- Cleaner way of asking the user for input for a new row
 - More sign-in options (Google, Email, etc.)
 - A clearer way to show when squares were created
 - Exporting stats or visualizations
