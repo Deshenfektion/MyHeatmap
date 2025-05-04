@@ -6,8 +6,6 @@
 
 I realized that checking off a habit creates the delusion that we always have to perform on the same level when in reality it is not about going all-in all the time, but about how consistent you do something. That is why I wanted to try a heatmap similar to GitHub's contribution grid for tracking my desired habits and goals.
 
-🔗 [Live App](https://heatmap-app-two.vercel.app/)
-
 ## How To Use
 
 Currently, GitHub is the only sign-in option.
@@ -18,6 +16,8 @@ Currently, GitHub is the only sign-in option.
 4. Click on squares to track the intensity or quality of your effort.
 
 Tip: Hover over a square to see when it was created, its position and its current level.
+
+🔗 [Live App](https://heatmap-app-two.vercel.app/)
 
 ## What I Learned
 
