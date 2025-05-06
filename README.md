@@ -19,6 +19,21 @@ Tip: Hover over a square to see when it was created, its position and its curren
 
 🔗 [Live App](https://heatmap-app-two.vercel.app/)
 
+## Tech Stack
+
+### Frontend
+*   **Framework:** Next.js
+*   **Language:** TypeScript
+*   **Styling:**
+    *   Tailwind CSS
+    *   Custom CSS
+
+### Backend & Database
+*   **Backend-as-a-Service (BaaS):** Supabase
+
+### Deployment & Hosting
+*   **Platform:** Vercel
+
 ## What I Learned
 
 - Designing with user flow in mind: Quick add, click, and see results instantly.
