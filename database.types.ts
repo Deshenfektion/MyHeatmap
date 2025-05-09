@@ -7,87 +7,72 @@ export type Json =
   | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
-      heatmap_rows: {
-        Row: {
-          created_at: string
-          heatmap_id: string
-          id: string
-          label: string
-          order: number | null
-        }
-        Insert: {
-          created_at?: string
-          heatmap_id: string
-          id?: string
-          label: string
-          order?: number | null
-        }
-        Update: {
-          created_at?: string
-          heatmap_id?: string
-          id?: string
-          label?: string
-          order?: number | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "heatmap_rows_heatmap_id_fkey"
-            columns: ["heatmap_id"]
-            isOneToOne: false
-            referencedRelation: "heatmaps"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      heatmap_squares: {
-        Row: {
-          created_at: string
-          id: string
-          level: number
-          position: number
-          row_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          level?: number
-          position: number
-          row_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          level?: number
-          position?: number
-          row_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "heatmap_squares_row_id_fkey"
-            columns: ["row_id"]
-            isOneToOne: false
-            referencedRelation: "heatmap_rows"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       heatmaps: {
         Row: {
           created_at: string
           id: string
+          label: string | null
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: string
+          label?: string | null
           user_id: string
         }
         Update: {
           created_at?: string
           id?: string
+          label?: string | null
           user_id?: string
+        }
+        Relationships: []
+      }
+      squares: {
+        Row: {
+          created_at: string
+          date: string | null
+          id: string
+          level: number
+        }
+        Insert: {
+          created_at?: string
+          date?: string | null
+          id?: string
+          level?: number
+        }
+        Update: {
+          created_at?: string
+          date?: string | null
+          id?: string
+          level?: number
         }
         Relationships: []
       }
@@ -213,7 +198,11 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {},
   },
 } as const
+
