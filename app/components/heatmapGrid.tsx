@@ -1,7 +1,7 @@
 // app/components/HeatmapGrid.tsx
 import React from "react";
 import HeatmapRow from "./row"; // Importiere die Zeilen-Komponente
-import { RowWithSquares } from "@/app/services/heatmapService"; // Importiere den gemeinsamen Typ
+import { RowWithSquares } from "@/app/services/IHeatmapService"; // Importiere den gemeinsamen Typ
 
 interface HeatmapGridProps {
   rowsWithSquares: RowWithSquares[]; // Die Daten kommen von der übergeordneten Komponente

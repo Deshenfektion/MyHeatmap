@@ -1,0 +1,1 @@
+alter table squares add column heatmap_id uuid references heatmaps(id);

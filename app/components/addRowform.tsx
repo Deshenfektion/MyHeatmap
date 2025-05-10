@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
-import { addRowToHeatmap } from "@/app/services/heatmapService";
+import { addRowToHeatmap } from "@/app/services/IHeatmapService";
 
 export default function AddRowForm() {
   // Label wird nicht mehr direkt im State gehalten, sondern über prompt abgefragt
