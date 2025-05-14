@@ -1,13 +1,20 @@
+import CreateHeatmapButton from "./components/CreateHeatmapButton";
+import { ServiceProvider } from "./contexts/ServiceContext";
 import { SupabaseHeatmapRepository } from "./repository/SupabaseHeatmapRepository";
 import { HeatmapServiceImpl } from "./services/HeatmapServiceImpl";
 
 export default function Page() {
-  const heatmapRepository = new SupabaseHeatmapRepository();
-  const heatmapService = new HeatmapServiceImpl(heatmapRepository);
+  return (
+    // TODO: Get userId from userData? hook
 
-  // If user does not have a heatmap yet, ask user for label and
-  // create a new heatmap for them
+    // TODO: Manage userId and label with useState()
+    // then paste into CreateHeatmapButton
 
-  // Display heatmap on the page
-  return <div>MyHeatmap</div>;
+    <>
+      <div>MyHeatmap</div>
+      <ServiceProvider>
+        <CreateHeatmapButton label="VibeForFlow"></CreateHeatmapButton>
+      </ServiceProvider>
+    </>
+  );
 }

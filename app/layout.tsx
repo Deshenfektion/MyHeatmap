@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { saira } from "@/lib/fonts";
+import { AuthProvider } from "./contexts/AuthContext";
 
 export const metadata: Metadata = {
   title: "MyHeatmap",
@@ -16,8 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${saira.className} antialiased`}>{children}</body>
+    <html>
+      <body className={`${saira.className} antialiased`}>
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }

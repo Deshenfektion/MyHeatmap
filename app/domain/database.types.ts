@@ -59,22 +59,33 @@ export type Database = {
         Row: {
           created_at: string
           date: string | null
+          heatmap_id: string | null
           id: string
           level: number
         }
         Insert: {
           created_at?: string
           date?: string | null
+          heatmap_id?: string | null
           id?: string
           level?: number
         }
         Update: {
           created_at?: string
           date?: string | null
+          heatmap_id?: string | null
           id?: string
           level?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "squares_heatmap_id_fkey"
+            columns: ["heatmap_id"]
+            isOneToOne: false
+            referencedRelation: "heatmaps"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
