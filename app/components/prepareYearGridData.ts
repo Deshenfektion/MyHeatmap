@@ -15,7 +15,7 @@ type GridCell = {
 
 export const prepareYearGridData = (
   squaresFromService: Square[],
-  today: Date = new Date()
+  creationDate: Date = new Date()
 ) => {
   const squaresMap = new Map(
     squaresFromService.map((s) => [
@@ -26,10 +26,7 @@ export const prepareYearGridData = (
 
   const gridCells: GridCell[] = [];
 
-  let lastDateInGrid = new Date(today);
-
-  let startDateInGrid = new Date(lastDateInGrid);
-  startDateInGrid.setDate(startDateInGrid.getDate() - 364); // Go back 365 days (covers 52 weeks + 1 day)
+  let startDateInGrid = new Date(creationDate);
   startDateInGrid.setDate(startDateInGrid.getDate() - startDateInGrid.getDay()); // Align to Sunday of that week
 
   let currentDate = new Date(startDateInGrid);
@@ -40,22 +37,11 @@ export const prepareYearGridData = (
     const isoDateStr = currentDate.toISOString().split("T")[0];
     const originalSquare = squaresMap.get(dateStr);
 
-    const isPastDayWithoutData =
-      !originalSquare &&
-      currentDate <= lastDateInGrid &&
-      currentDate >=
-        new Date(
-          new Date(lastDateInGrid).setDate(lastDateInGrid.getDate() - 364)
-        );
-    const isFutureDay = currentDate > lastDateInGrid;
-    const isOutsideRelevantYearRange =
-      currentDate <
-      new Date(
-        new Date(lastDateInGrid).setDate(lastDateInGrid.getDate() - 364)
-      );
+    const isPastDayWithoutData = !originalSquare && currentDate < creationDate;
+    const isFutureDay = currentDate >= creationDate;
+    const isOutsideRelevantYearRange = false; // No longer relevant
 
-    const isBlankCell =
-      isPastDayWithoutData || isFutureDay || isOutsideRelevantYearRange;
+    const isBlankCell = isPastDayWithoutData || isOutsideRelevantYearRange;
 
     gridCells.push({
       date: isoDateStr,
