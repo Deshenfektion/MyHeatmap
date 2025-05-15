@@ -107,4 +107,12 @@ export class SquaresServiceImpl implements SquaresService {
   ): Promise<Square> {
     return this.squaresRepository.updateSquare(squareId, squareData);
   }
+
+  async insertSquare(squareData: SquareInsert): Promise<Square> {
+    return this.squaresRepository.insertSquare(squareData);
+  }
+
+  async insertMultipleSquares(squaresData: SquareInsert[]): Promise<Square[]> {
+    return this.squaresRepository.insertMultipleSquares(squaresData);
+  }
 }
