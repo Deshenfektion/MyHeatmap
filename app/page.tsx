@@ -6,11 +6,6 @@ import { HeatmapServiceImpl } from "./services/HeatmapServiceImpl";
 
 export default function Page() {
   return (
-    // TODO: Get userId from userData? hook
-
-    // TODO: Manage userId and label with useState()
-    // then paste into CreateHeatmapButton
-
     <>
       <div className="text-2xl font-bold m-4">MyHeatmap</div>
       <ServiceProvider>

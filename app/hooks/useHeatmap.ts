@@ -10,7 +10,6 @@ type HeatmapInsert = Database["public"]["Tables"]["heatmaps"]["Insert"];
 
 export function useHeatmap() {
   const { heatmapService, squaresService } = useServices();
-
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [heatmap, setHeatmap] = useState<HeatmapInsert>();
