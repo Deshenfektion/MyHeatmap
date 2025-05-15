@@ -49,6 +49,34 @@ const Heatmap: React.FC = () => {
     fetchHeatmapsAndSquares();
   }, [heatmapService, squaresService, user]);
 
+  const handleSquareClick = async (square: Square) => {
+    const newLevel = (square.level + 1) % 4;
+    const updatedSquare = { ...square, level: newLevel };
+    setSquares(squares.map((s) => (s.id === square.id ? updatedSquare : s)));
+    try {
+      await squaresService.updateSquare(square.id, { level: newLevel });
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Failed to update square level"
+      );
+    }
+  };
+
+  const getSquareColor = (level: number) => {
+    switch (level) {
+      case 0:
+        return "bg-transparent";
+      case 1:
+        return "bg-green-200";
+      case 2:
+        return "bg-green-500";
+      case 3:
+        return "bg-green-800";
+      default:
+        return "bg-transparent";
+    }
+  };
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -93,8 +121,9 @@ const Heatmap: React.FC = () => {
                       .map((square) => (
                         <div
                           key={square.id}
-                          className="w-5 h-5 opacity-75 m-0.5 border border-gray-300"
+                          className={`w-5 h-5 m-0.5 border border-gray-300 cursor-pointer ${getSquareColor(square.level)}`}
                           title={`Date: ${square.date ? new Date(square.date).toLocaleDateString() : "No date"}, Level: ${square.level}`}
+                          onClick={() => handleSquareClick(square)}
                         />
                       ))}
                   </div>

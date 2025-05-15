@@ -4,6 +4,7 @@ import { Database } from "../domain/database.types";
 
 type Square = Database["public"]["Tables"]["squares"]["Row"];
 type SquareInsert = Database["public"]["Tables"]["squares"]["Insert"];
+type SquareUpdate = Database["public"]["Tables"]["squares"]["Update"];
 
 export class SquaresServiceImpl implements SquaresService {
   private squaresRepository: SquaresRepository;
@@ -98,5 +99,12 @@ export class SquaresServiceImpl implements SquaresService {
       return [];
     }
     return this.squaresRepository.findSquaresByHeatmapId(heatmapId);
+  }
+
+  async updateSquare(
+    squareId: string,
+    squareData: SquareUpdate
+  ): Promise<Square> {
+    return this.squaresRepository.updateSquare(squareId, squareData);
   }
 }

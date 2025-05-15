@@ -4,6 +4,7 @@ import { SquaresRepository } from "../domain/repository/SquaresRepository";
 
 type Square = Database["public"]["Tables"]["squares"]["Row"];
 type SquareInsert = Database["public"]["Tables"]["squares"]["Insert"];
+type SquareUpdate = Database["public"]["Tables"]["squares"]["Update"];
 
 export class SupabaseSquaresRepository implements SquaresRepository {
   // Class attribute
@@ -97,5 +98,39 @@ export class SupabaseSquaresRepository implements SquaresRepository {
       `SupabaseSquaresRepository: Found ${data?.length || 0} squares for heatmapId: ${heatmapId}`
     );
     return (data as Square[]) || [];
+  }
+
+  async updateSquare(
+    squareId: string,
+    squareData: SquareUpdate
+  ): Promise<Square> {
+    console.log(
+      `SupabaseSquaresRepository: Updating square with ID: ${squareId}, data:`,
+      squareData
+    );
+    const { data, error } = await this.supabaseClient
+      .from("squares")
+      .update(squareData)
+      .eq("id", squareId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error(
+        `SupabaseSquaresRepository: Error updating square with ID ${squareId}:`,
+        error
+      );
+      throw error;
+    }
+    if (!data) {
+      console.error(
+        `SupabaseSquaresRepository: No data returned after updating square with ID ${squareId}.`
+      );
+      throw new Error("Failed to update square: No data returned.");
+    }
+    console.log(
+      `SupabaseSquaresRepository: Successfully updated square with ID: ${squareId}`
+    );
+    return data as Square;
   }
 }
