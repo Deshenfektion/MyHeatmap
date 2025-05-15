@@ -98,16 +98,17 @@ const Heatmap: React.FC = () => {
 
   return (
     <div>
-      <h1>Heatmaps</h1>
       <ul>
         {heatmaps.map((heatmap) => (
-          <li key={heatmap.id}>
-            {heatmap.label || "Unnamed Heatmap"} - Created at:{" "}
-            {new Date(heatmap.created_at).toLocaleDateString()}
+          <li
+            key={heatmap.id}
+            className="text-xl font-bold mb-2"
+            title={`Created at: ${new Date(heatmap.created_at).toLocaleDateString()}`}
+          >
+            {heatmap.label || "Unnamed Heatmap"}
           </li>
         ))}
       </ul>
-      <h2>Squares</h2>
       <div className="flex flex-row flex-wrap">
         {Object.entries(squaresByMonth).map(([month, monthSquares]) => (
           <div key={month} className="mr-5 mb-5">
