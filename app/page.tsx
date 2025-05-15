@@ -1,4 +1,5 @@
 import CreateHeatmapButton from "./components/CreateHeatmapButton";
+import Heatmap from "./components/Heatmap";
 import { ServiceProvider } from "./contexts/ServiceContext";
 import { SupabaseHeatmapRepository } from "./repository/SupabaseHeatmapRepository";
 import { HeatmapServiceImpl } from "./services/HeatmapServiceImpl";
@@ -14,6 +15,7 @@ export default function Page() {
       <div>MyHeatmap</div>
       <ServiceProvider>
         <CreateHeatmapButton label="VibeForFlow"></CreateHeatmapButton>
+        <Heatmap></Heatmap>
       </ServiceProvider>
     </>
   );

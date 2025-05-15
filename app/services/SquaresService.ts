@@ -7,4 +7,6 @@ export interface SquaresService {
   createSquare(heatmapId: string, date: string): Promise<SquareInsert>;
 
   createYearOfSquares(heatmapId: string): Promise<SquareInsert[]>;
+
+  getSquaresForHeatmap(heatmapId: string): Promise<Square[]>;
 }

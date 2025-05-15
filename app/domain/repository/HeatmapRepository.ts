@@ -6,4 +6,5 @@ type HeatmapInsert = Database["public"]["Tables"]["heatmaps"]["Insert"];
 export interface HeatmapRepository {
   insertHeatmap(userId: string, label: string): Promise<HeatmapInsert>;
   findByUserId(userId: string): Promise<HeatmapInsert | null>;
+  findAllByUserId(userId: string): Promise<Heatmap[]>;
 }

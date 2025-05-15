@@ -64,10 +64,10 @@ export class HeatmapServiceImpl implements HeatmapService {
       throw squaresError;
     }
 
-    return newHeatmap; // Gib die neu erstellte Heatmap zurück
+    return newHeatmap as Heatmap;
   }
-  // Du benötigst wahrscheinlich noch eine Methode, um ALLE Heatmaps eines Users zu laden, z.B.:
-  // async getHeatmapsByUserId(userId: string): Promise<Heatmap[]> {
-  //   return this.heatmapRepository.findAllByUserId(userId); // Diese Methode müsste im Repository existieren
-  // }
+
+  async getHeatmapsByUserId(userId: string): Promise<Heatmap[]> {
+    return this.heatmapRepository.findAllByUserId(userId);
+  }
 }

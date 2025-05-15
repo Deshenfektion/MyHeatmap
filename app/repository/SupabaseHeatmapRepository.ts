@@ -59,6 +59,19 @@ export class SupabaseHeatmapRepository implements HeatmapRepository {
     return data as HeatmapInsert | null;
   }
 
+  async findAllByUserId(userId: string): Promise<Heatmap[]> {
+    const { data, error } = await this.supabaseClient
+      .from("heatmaps")
+      .select("*")
+      .eq("user_id", userId);
+
+    if (error) {
+      console.error("Error finding heatmaps by user ID:", error.message);
+      return [];
+    }
+    return data as Heatmap[];
+  }
+
   // Update heatmap label
 
   // Delete heatmap
