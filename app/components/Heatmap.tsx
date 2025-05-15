@@ -52,6 +52,22 @@ const Heatmap: React.FC = () => {
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
+  // Group squares by month
+  const squaresByMonth = squares.reduce(
+    (acc, square) => {
+      const date = square.date ? new Date(square.date) : null;
+      if (date) {
+        const month = date.toLocaleString("default", { month: "long" });
+        if (!acc[month]) {
+          acc[month] = [];
+        }
+        acc[month].push(square);
+      }
+      return acc;
+    },
+    {} as Record<string, Square[]>
+  );
+
   return (
     <div>
       <h1>Heatmaps</h1>
@@ -64,19 +80,28 @@ const Heatmap: React.FC = () => {
         ))}
       </ul>
       <h2>Squares</h2>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
-        {squares.map((square) => (
-          <div
-            key={square.id}
-            style={{
-              width: "20px",
-              height: "20px",
-              backgroundColor: `rgba(0, 0, 255, ${square.level / 3})`,
-              margin: "1px",
-              border: "1px solid #ccc",
-            }}
-            title={`Date: ${square.date ? new Date(square.date).toLocaleDateString() : "No date"}, Level: ${square.level}`}
-          />
+      <div className="flex flex-row flex-wrap">
+        {Object.entries(squaresByMonth).map(([month, monthSquares]) => (
+          <div key={month} className="mr-5 mb-5">
+            <h3>{month}</h3>
+            <div className="flex flex-col">
+              {Array.from({ length: Math.ceil(monthSquares.length / 4) }).map(
+                (_, rowIndex) => (
+                  <div key={rowIndex} className="flex flex-nowrap">
+                    {monthSquares
+                      .slice(rowIndex * 4, (rowIndex + 1) * 4)
+                      .map((square) => (
+                        <div
+                          key={square.id}
+                          className="w-5 h-5 opacity-75 m-0.5 border border-gray-300"
+                          title={`Date: ${square.date ? new Date(square.date).toLocaleDateString() : "No date"}, Level: ${square.level}`}
+                        />
+                      ))}
+                  </div>
+                )
+              )}
+            </div>
+          </div>
         ))}
       </div>
     </div>
